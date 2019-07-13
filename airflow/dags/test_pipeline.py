@@ -11,7 +11,7 @@ from launcher.docker import do_test_docker
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime.now(),
+    'start_date': '2019-07-01',
 }
 
 
@@ -24,11 +24,7 @@ def read_xcoms(**context):
 with DAG('pipeline_python_2', default_args=default_args) as dag:
     t1 = BashOperator(
         task_id='print_date1',
-        bash_command='date')
-
-    t1_5 = PythonOperator(
-        task_id="test_docker",
-        python_callable=do_test_docker
+        bash_command='date'
     )
 
     t2_1 = PythonOperator(
@@ -56,4 +52,4 @@ with DAG('pipeline_python_2', default_args=default_args) as dag:
     )
 
     t2_2 >> t2_3
-    t1 >> t1_5 >> [t2_1, t2_3] >> t4
+    t1 >> [t2_1, t2_3] >> t4
